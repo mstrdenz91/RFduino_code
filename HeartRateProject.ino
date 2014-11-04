@@ -10,20 +10,37 @@ QS  :       boolean that is made true whenever Pulse is found and BPM is updated
 Pulse :     boolean that is true when a heartbeat is sensed then false in time with pin13 LED going out.
 */
 
-const int ledPinGreen = 3;
+//  VARIABLES:
+const int pulsePin = 2;        // Pulse Sensor purple wire connected to analog pin 1
+const int ledPinGreen = 3;     
 int ledState = LOW;
 
+// these variables are volatile because they are used during the interrupt service routine!
+volatile int BPM;                   // used to hold the pulse rate
+volatile int Signal;                // holds the incoming raw data
+volatile int IBI = 600;             // holds the time between beats, must be seeded! 
+volatile boolean Pulse = false;     // true when pulse wave is high, false when it's low
+volatile boolean QS = false;        // becomes true when Arduoino finds a beat.
+
 void setup() 
-{
-  //interruptSetup();                 // sets up to read Pulse Sensor signal every 2mS 
-  interruptSetup();
+{              
   pinMode(ledPinGreen, OUTPUT);
+  interruptSetup(); // sets up to read Pulse Sensor signal every 2ms 
+  
+  Serial.begin(9600);
+  Serial.println("Start");
+  
 }
 
 void loop() 
 {
   // put your main code here, to run repeatedly:
-
+  if (QS == true) // Quantified Self flag is true when arduino finds a heartbeat
+  {        
+    Serial.println( BPM );  // send heartbeat over serial
+    QS = false;                      // reset the Quantified Self flag for next time    
+  }
+  delay(20);                             //  take a break
 }
 
 
