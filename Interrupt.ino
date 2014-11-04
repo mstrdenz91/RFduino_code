@@ -57,7 +57,7 @@ void TIMER2_Interrupt(void)
       {                                   
         if ( (Signal > thresh) && (Pulse == false) && (N > (IBI/5)*3) )
         {        
-          Serial.println("Pulse = true");
+          //Serial.println("Pulse = true");
           Pulse = true;                               // set the Pulse flag when we think there is a pulse
           //ledState = !ledState;                       // toggle LED
           //digitalWrite(ledPinGreen, ledState);        // blinks LED
